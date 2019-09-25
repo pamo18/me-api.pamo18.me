@@ -1,19 +1,20 @@
 var express = require('express');
 var router = express.Router();
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./db/texts.sqlite');
+const error = require("../models/error.js");
+const db = require("../db/database.js");
 
 router.get("/", (req, res) => {
     let sql = "SELECT * FROM countries";
+
     db.all(sql, (err, row) => {
         if (err) {
-            console.log(err)
+            return error.database(res, "/countries", err);
         } else {
             res.json({
                 data: {
                     countries: row
                 }
-            })
+            });
         }
     });
 });

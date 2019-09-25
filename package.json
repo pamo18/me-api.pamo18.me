@@ -4,10 +4,15 @@
   "description": "jsramverk",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "NODE_ENV='normal' nodemon app.js",
     "production": "NODE_ENV='production' node app.js",
-    "test": "NODE_ENV='test' nodemon app.js",
-    "deploy": "rsync -av -e ssh . pamo18@pamo18.me:express/"
+    "pretest": "sqlite3 db/test.sqlite '.read db/migrate.sql'",
+    "test": "nyc --reporter=html --reporter=text mocha 'test/**/*.js' --timeout 10000",
+    "posttest": "npm run eslint",
+    "deploy": "rsync -av -e ssh . pamo18@pamo18.me:express/",
+    "resettest": "sqlite3 db/test.sqlite '.read db/migrate.sql'",
+    "resettexts": "sqlite3 db/texts.sqlite '.read db/migrate.sql'",
+    "eslint": "eslint ."
   },
   "author": "",
   "license": "ISC",
@@ -20,5 +25,14 @@
     "morgan": "^1.9.1",
     "showdown": "^1.9.0",
     "sqlite3": "^4.1.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "eslint": "^6.4.0",
+    "eslint-plugin-react": "^7.14.3",
+    "javascript-style-guide": "^1.0.1",
+    "mocha": "^6.2.0",
+    "nyc": "^14.1.1"
   }
 }

@@ -9,12 +9,12 @@ CREATE TABLE IF NOT EXISTS users (
     country VARCHAR(60) NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(60) NOT NULL,
-    UNIQUE(email)
+    UNIQUE(name)
 );
 
 CREATE TABLE IF NOT EXISTS report (
     title VARCHAR(60) NOT NULL,
-    content TEXT,
+    content TEXT NOT NULL,
     UNIQUE(title)
 );
 

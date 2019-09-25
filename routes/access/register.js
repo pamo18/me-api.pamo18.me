@@ -1,19 +1,17 @@
 var express = require('express');
 var router = express.Router();
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./db/texts.sqlite');
+const error = require("../../models/error.js");
+const db = require("../../db/database.js");
 const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 router.post("/", (req, res) => {
     let sql = "INSERT INTO users VALUES (?, ?, ?, ?, ?)";
+
     bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
         if (err) {
-            res.status(400).json({"error":err.message});
-            console.log(err.message);
-            return;
+            return error.hash(res, "/register", err);
         }
-        console.log(hash);
         let params = [
             req.body.name,
             req.body.birthday,
@@ -21,9 +19,10 @@ router.post("/", (req, res) => {
             req.body.email,
             hash
         ];
+
         db.run(sql, params, (err) => {
             if (err) {
-                console.log(err)
+                return error.database(res, "/register", err);
             } else {
                 res.status(201).json({
                     data: {
@@ -33,6 +32,5 @@ router.post("/", (req, res) => {
             }
         });
     });
-
 });
 module.exports = router;

@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./db/texts.sqlite');
+const error = require("../../models/error.js");
+const db = require("../../db/database.js");
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+
 dotenv.config();
 
 router.post("/",
@@ -13,10 +14,10 @@ router.post("/",
 function checkToken(req, res, next) {
     const token = req.headers['x-access-token'];
 
+    // eslint-disable-next-line no-unused-vars
     jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
         if (err) {
-            console.log("Invalid token");
-            return
+            return error.token(res, "/reports", err);
         }
 
         console.log("valid token");
@@ -25,12 +26,12 @@ function checkToken(req, res, next) {
 }
 
 function addReport(req, res) {
-    console.log(req.title);
     let sql = "INSERT INTO report VALUES (?, ?)";
     let params = [req.title, req.content];
+
     db.run(sql, params, (err) => {
         if (err) {
-            console.log(err)
+            return error.database(res, "/reports", err);
         } else {
             res.status(201).json({
                 data: {
