@@ -108,4 +108,4 @@ VALUES
 
 INSERT INTO common
 VALUES
-    ("countries", "Sweden,Denmark,Norway")
+    ("countries", "Sweden,Denmark,Norway");
