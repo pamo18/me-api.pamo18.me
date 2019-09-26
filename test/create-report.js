@@ -1,4 +1,5 @@
 /* global it describe */
+/*eslint max-len: ["error", { "code": 200 }]*/
 
 process.env.NODE_ENV = 'test';
 
@@ -6,11 +7,12 @@ process.env.NODE_ENV = 'test';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../app.js');
-const jwt = require('jsonwebtoken');
 
 chai.should();
 
 chai.use(chaiHttp);
+
+const apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAbWFpbC5jb20iLCJpYXQiOjE1Njk1MDM4NjMsImV4cCI6MTYwMTAzOTg2M30.y82iLLmIFP-ngMpls3mz4labtNLnaSOmXEQgoJWtoWI";
 
 describe('Create report', () => {
     describe('POST /reports', () => {
@@ -19,13 +21,10 @@ describe('Create report', () => {
                 title: "test1",
                 content: "text"
             };
-            const payload = { email: "test@mail.com" };
-            const secret = process.env.JWT_SECRET;
-            const token = jwt.sign(payload, secret, { expiresIn: '1h'});
 
             chai.request(server)
                 .post("/reports")
-                .set('x-access-token', token)
+                .set('x-access-token', apiKey)
                 .send(report)
                 .end((err, res) => {
                     res.should.have.status(201);
@@ -42,13 +41,10 @@ describe('Create report', () => {
                 title: "test2",
                 content: null
             };
-            const payload = { email: "test@mail.com" };
-            const secret = process.env.JWT_SECRET;
-            const token = jwt.sign(payload, secret, { expiresIn: '1h'});
 
             chai.request(server)
                 .post("/reports")
-                .set('x-access-token', token)
+                .set('x-access-token', apiKey)
                 .send(report)
                 .end((err, res) => {
                     res.should.have.status(500);

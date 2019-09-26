@@ -3,9 +3,6 @@ var router = express.Router();
 const error = require("../../models/error.js");
 const db = require("../../db/database.js");
 const jwt = require('jsonwebtoken');
-const dotenv = require('dotenv');
-
-dotenv.config();
 
 router.post("/",
     (req, res, next) => checkToken(req, res, next),
@@ -13,9 +10,10 @@ router.post("/",
 
 function checkToken(req, res, next) {
     const token = req.headers['x-access-token'];
+    const secret = process.env.JWT_SECRET;
 
     // eslint-disable-next-line no-unused-vars
-    jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+    jwt.verify(token, secret, function(err, decoded) {
         if (err) {
             return error.token(res, "/reports", err);
         }
