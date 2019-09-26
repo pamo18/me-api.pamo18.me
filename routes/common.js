@@ -9,7 +9,7 @@ router.get("/:name", (req, res) => {
 
     db.get(sql, params, (err, row) => {
         if (err) {
-            return error.database(res, `/common/${req.params.name}`, err);
+            return error.database(res, "/common/" + req.params.name, err);
         } else {
             res.json({
                 data: {
@@ -26,11 +26,11 @@ router.post("/:name", (req, res) => {
 
     db.run(sql, params, (err) => {
         if (err) {
-            return error.database(res, `/common/${req.params.name}`, err);
+            return error.database(res, "/common/" + req.params.name, err);
         } else {
             res.status(201).json({
                 data: {
-                    msg: `Updated common countries`
+                    msg: "Updated common countries"
                 }
             });
         }
