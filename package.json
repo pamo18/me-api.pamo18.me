@@ -7,7 +7,7 @@
     "start": "NODE_ENV='normal' nodemon app.js",
     "production": "NODE_ENV='production' node app.js",
     "pretest": "sqlite3 db/test.sqlite '.read db/migrate.sql'",
-    "test": "nyc --reporter=html --reporter=text mocha 'test/**/*.js' --timeout 10000",
+    "test": "nyc --reporter=html --reporter=text --reporter=clover mocha 'test/**/*.js' --timeout 10000",
     "posttest": "npm run eslint",
     "deploy": "rsync -av -e ssh . pamo18@pamo18.me:express/",
     "resettest": "sqlite3 db/test.sqlite '.read db/migrate.sql'",
