@@ -52,6 +52,94 @@ VALUES (
     "Det var väldigt mycket at göra i kmom03!!!  <br/><br/>I detta kusmoment har jag installerat Express JavaScript ramverket på en linux server som API för min React me-sida.<br/><br/>**[Express.js](https://expressjs.com)**"
 );
 
+INSERT INTO "report" VALUES ('Kmom04','<p>I detta kursmoment har jag skapat enhetstestor och integrationstester med Mocha och Chai ihop med Istanbul för Code coverage. Jag har skapat 6st funktiontester med Selenium ihop med Mocha.  Jag har också jobbat med Continuous Integration med hjälp av Travis och Scrutinizer där jag har checkat ut både min backend och frontend kod samt badgat mina Readme filer med resultaterna.</p><h2>Selenium Use-cases tests:</h2><h4>Go to page Redovisning, Kmom03</h4><p>From the first page the user clicks on the navigation link ''Redovisning'', then clicks on the Kmom03 link in the new navbar and can now view Kmom03.</p>
+<pre><code>
+test.it("Test go to kmom03", function(done) {
+        // Use nav link to go to home page
+        browser.findElement(By.linkText("Redovisning")).then(function(element) {
+            element.click();
+        });<br/>
+        browser.findElement(By.linkText("Kmom03")).then(function(element) {
+            element.click();
+        });<br/>
+        // Check correct heading
+        browser.findElement(By.css("h1")).then(function(element) {
+            element.getText().then(function(text) {
+                assert.equal(text, "Kmom03");
+            });
+        });<br/>
+        // Check correct URL ending
+        browser.getCurrentUrl().then(function(url) {
+            assert.ok(url.endsWith("/reports/week/3"));
+        });<br/>
+        done();
+});
+</code></pre>
+<h4>Go to page Register</h4><p>From the first page the user clicks on the Register link and can now view the Registration page.</p>
+<pre><code>
+test.it("Test go to register", function(done) {
+        // Use nav link to go to home page
+        browser.findElement(By.linkText("Register")).then(function(element) {
+            element.click();
+        });<br/>
+        // Check correct heading
+        browser.findElement(By.css("h1")).then(function(element) {
+            element.getText().then(function(text) {
+                assert.equal(text, "Registration");
+            });
+        });<br/>
+        // Check correct URL ending
+        browser.getCurrentUrl().then(function(url) {
+            assert.ok(url.endsWith("/register"));
+        });<br/>
+        done();
+});
+</code></pre>
+<h4>Login and view Profile page</h4><p>From the first page the user clicks on ''Login'' and enters their name and password followed by clicking on the ''Login'' button.  Now the user can view their profile page.</P><pre><code>
+test.it("Test login", function(done) {
+        // Use nav link to go to home page
+        browser.findElement(By.linkText("Login")).then(function(element) {
+            element.click();
+        });<br/>
+        browser.findElement(By.name("name")).then(function(element) {
+            element.sendKeys("doe");
+        });<br/>
+        browser.findElement(By.name("password")).then(function(element) {
+            element.sendKeys("doe");
+        });<br/>
+        browser.findElement(By.name("login")).then(function(element) {
+            element.click();
+        });<br/>
+        browser.sleep(2000);<br/>
+        // Check correct heading
+        browser.findElement(By.css("h1")).then(function(element) {
+            element.getText().then(function(text) {
+                assert.equal(text, "Profile page");
+            });
+        });<br/>
+        // Check correct heading
+        browser.findElement(By.css("h3")).then(function(element) {
+            element.getText().then(function(text) {
+                assert.equal(text, "Name: doe");
+            });
+        });<br/>
+        // Check correct URL ending
+        browser.getCurrentUrl().then(function(url) {
+            assert.ok(url.endsWith("/profile"));
+        });<br/>
+        browser.findElement(By.name("logoff")).then(function(element) {
+            element.click();
+        });<br/>
+        // Check correct heading
+        browser.findElement(By.css("h1")).then(function(element) {
+            element.getText().then(function(text) {
+                assert.equal(text, "Login");
+            });
+        });<br/>
+        done();
+});
+</code></pre>');
+
 INSERT INTO countries
 VALUES
     ("Albania"),
